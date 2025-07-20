@@ -1,7 +1,22 @@
-from django.shortcuts import render
-from django.http.response import JsonResponse
+from rest_framework import viewsets
+from .serializers import (
+    DonutSerializer, RecipeSerializer, IngredientSerializer
+)
+from .models import (
+    Donut, Recipe, Ingredient
+)
 
 
-# Create your views here.
-def home(request):
-    return JsonResponse({"Status": "Ok"})
+class DonutViewSet(viewsets.ModelViewSet):
+    queryset = Donut.objects.all()
+    serializer_class = DonutSerializer
+
+
+class IngredientViewSet(viewsets.ModelViewSet):
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
+
+
+class RecipeViewSet(viewsets.ModelViewSet):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
