@@ -49,3 +49,31 @@ CREATE TABLE IF NOT EXISTS `donuts_review` (
     CONSTRAINT `fk_review_donut` FOREIGN KEY (`donut_id`) REFERENCES `donuts_donut`(`id`) ON DELETE CASCADE,
     CONSTRAINT `unique_customer_donut_review` UNIQUE (`customer_id`, `donut_id`)
 );
+
+CREATE TABLE IF NOT EXISTS `Order` (
+    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `order_number` BIGINT NOT NULL UNIQUE,
+    `customer_id` INT NOT NULL,
+    `timestamp` DATE NOT NULL,
+    `employee_id` BIGINT NOT NULL,
+    CONSTRAINT `fk_order_customer` FOREIGN KEY (`customer_id`) REFERENCES `donuts_customer`(`id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_order_employee` FOREIGN KEY (`employee_id`) REFERENCES `donuts_employee`(`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `donuts_donut_order` (
+    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `donut_id` INT NOT NULL,
+    `order_id` INT NOT NULL,
+    `quantity` INT NOT NULL CHECK (`quantity` > 0),
+    CONSTRAINT `fk_donutorder_donut` FOREIGN KEY (`donut_id`) REFERENCES `donuts_donut`(`id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_donutorder_order` FOREIGN KEY (`order_id`) REFERENCES `donuts_order`(`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `Payment` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `order_id` BIGINT NOT NULL,
+    `payment_method` VARCHAR(50) NOT NULL,
+    `amount_paid` DECIMAL(10, 2) NOT NULL CHECK (`amount_paid` >= 0),
+    `payment_date` DATE NOT NULL,
+    CONSTRAINT `fk_payment_order` FOREIGN KEY (`order_id`) REFERENCES `donuts_order`(`id`) ON DELETE CASCADE
+);

@@ -1,10 +1,12 @@
 from rest_framework import viewsets
 from .serializers import (
     DonutSerializer, RecipeSerializer, IngredientSerializer,
-    CustomerSerializer, EmployeeSerializer, ReviewSerializer
+    CustomerSerializer, EmployeeSerializer, ReviewSerializer,
+    OrderSerializer, DonutOrderSerializer, PaymentSerializer
 )
 from .models import (
-    Donut, Recipe, Ingredient, Customer, Employee, Review
+    Donut, Recipe, Ingredient, Customer, Employee, Review,
+    Order, DonutOrder, Payment
 )
 
 
@@ -36,3 +38,18 @@ class EmployeeViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+class DonutOrderViewSet(viewsets.ModelViewSet):
+    queryset = DonutOrder.objects.all()
+    serializer_class = DonutOrderSerializer
+
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer

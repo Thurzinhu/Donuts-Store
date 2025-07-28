@@ -80,3 +80,32 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review by {self.customer.first_name} {self.customer.last_name} for {self.donut.name} - {self.rating}/5"
+
+
+class Order(models.Model):
+    order_number = models.BigIntegerField(null=False, blank=False, unique=True)
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    timestamp = models.DateField(null=False, blank=False)
+    employee = models.ForeignKey('Employee', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Order #{self.order_number} by {self.customer.first_name} {self.customer.last_name}"
+
+
+class DonutOrder(models.Model):
+    donut = models.ForeignKey('Donut', on_delete=models.CASCADE)
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    quantity = models.IntegerField(null=False, blank=False, validators=[MinValueValidator(1)])
+
+    def __str__(self):
+        return f"{self.quantity} x {self.donut.name} in Order #{self.order.order_number}"
+
+
+class Payment(models.Model):
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    payment_method = models.CharField(null=False, blank=False, max_length=50)
+    amount_paid = models.DecimalField(null=False, blank=False, max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    payment_date = models.DateField(null=False, blank=False)
+
+    def __str__(self):
+        return f"Payment of ${self.amount_paid} for Order #{self.order.order_number} via {self.payment_method}"
