@@ -1,0 +1,35 @@
+services:
+  web:
+    build: ./src
+    env_file: .env
+    volumes:
+      - ./src:/usr/src/app
+    restart: 'on-failure'
+
+  web_migrate:
+    extends:
+      service: web
+    depends_on:
+      - db
+    command: python manage.py migrate
+
+  db:
+    image: mysql:8.0
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    env_file: .env
+
+  backend:
+    extends:
+      service: web
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - web_migrate
+    command: python manage.py runserver 0.0.0.0:8000
+
+volumes:
+  mysql-data:
