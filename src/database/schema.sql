@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `donuts_review` (
     CONSTRAINT `unique_customer_donut_review` UNIQUE (`customer_id`, `donut_id`)
 );
 
-CREATE TABLE IF NOT EXISTS `Order` (
+CREATE TABLE IF NOT EXISTS `donuts_order` (
     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `order_number` BIGINT NOT NULL UNIQUE,
     `customer_id` INT NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `donuts_donut_order` (
     CONSTRAINT `fk_donutorder_order` FOREIGN KEY (`order_id`) REFERENCES `donuts_order`(`id`) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS `Payment` (
+CREATE TABLE IF NOT EXISTS `donuts_payment` (
     `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `order_id` BIGINT NOT NULL,
     `payment_method` VARCHAR(50) NOT NULL,

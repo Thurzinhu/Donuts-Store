@@ -11,7 +11,7 @@
 --   - p_employee_id: ID do funcionário responsável
 --   - p_order_date: Data do pedido
 -- Funcionalidade:
---   - Cria um novo pedido na tabela Order
+--   - Cria um novo pedido na tabela donuts_order
 --   - Retorna o ID do pedido criado para uso posterior
 -- -----------------------------------------------------------------------------
 DELIMITER $$
@@ -34,7 +34,7 @@ BEGIN
     START TRANSACTION;
     
     -- Verifica se o número do pedido já existe
-    IF EXISTS (SELECT 1 FROM `Order` WHERE order_number = p_order_number) THEN
+    IF EXISTS (SELECT 1 FROM `donuts_order` WHERE order_number = p_order_number) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Número de pedido já existe';
     END IF;
     
@@ -49,7 +49,7 @@ BEGIN
     END IF;
     
     -- Cria o pedido
-    INSERT INTO `Order` (order_number, customer_id, timestamp, employee_id)
+    INSERT INTO `donuts_order` (order_number, customer_id, timestamp, employee_id)
     VALUES (p_order_number, p_customer_id, p_order_date, p_employee_id);
     
     -- Obtém o ID do pedido criado
